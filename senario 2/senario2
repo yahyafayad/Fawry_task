@@ -1,0 +1,46 @@
+Troubleshooting Report: Internal Web Dashboard Connectivity Issue
+Issue Summary
+1. DNS Resolution Verification
+1.1 Check Local DNS Resolution
+cat /etc/resolv.conf
+dig internal.example.com
+
+1.2 Check Public DNS Resolution (Google DNS)
+
+dig @8.8.8.8 internal.example.com
+Conclusion:
+•	The domain internal.example.com is not resolving correctly in both internal and external DNS.
+2. Service Reachability Diagnostics
+Tests Performed
+2.1 Check if Service is Listening (Assuming IP is known)
+. Root Cause Analysis (All Possible Causes)
+DNS Layer Issues
+ Missing DNS Record
+•	internal.example.com not configured in the internal DNS server.
+DNS Server Down
+•	Local DNS resolver (192.168.1.1) may be unresponsive.
+ Split-DNS Misconfiguration
+•	Internal domain not resolving correctly due to incorrect zone settings.
+Network Layer Issues
+ Firewall Blocking DNS (Port 53) or HTTP/HTTPS (Port 80/443)
+•	iptables/nftables or cloud security groups may be blocking traffic.
+Network Segmentation Issue
+•	VLAN/subnet misconfiguration preventing DNS queries.
+Service Layer Issues
+Web Service Not Running
+•	Apache/Nginx crashed or not started.
+Load Balancer/VIP Issue
+•	If behind a load balancer, the backend may be unhealthy.
+SSL Certificate Problem
+•	Expired or misconfigured certificate causing rejection.
+________________________________________
+4. Proposed Fixes & Commands
+4.1 Fix DNS Resolution
+Check DNS Records
+nslookup internal.example.com 192.168.1.1  # Check internal DNS
+
+4.2 Fix Service Reachability
+Check Web Service Status
+Check Firewall Rules
+Check Load Balancer (If Applicable)
+
